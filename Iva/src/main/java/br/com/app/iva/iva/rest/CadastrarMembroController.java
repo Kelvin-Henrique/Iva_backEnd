@@ -1,40 +1,42 @@
 package br.com.app.iva.iva.rest;
 
-import java.util.Optional;
-
-import org.springframework.aop.framework.adapter.ThrowsAdviceInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.com.app.iva.iva.entity.CadastrarMembro;
 import br.com.app.iva.iva.service.CadastrarMembroService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/cadastrarMembro")
 public class CadastrarMembroController {
 
+	@Autowired
 	CadastrarMembroService cadastrarService;
 	
 	@PostMapping
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public CadastrarMembro save(@RequestParam(required = true) CadastrarMembro membro) {
-		
-		return cadastrarService.salvar(membro);
+	@ResponseStatus(value = HttpStatus.OK)
+	@Operation(summary = "Salvar Dados dos Membros")
+	public Integer save
+	(@RequestBody(required = true) CadastrarMembro cadastrarMembro) {
+
+		CadastrarMembro membroSalvo = cadastrarService.salvar(cadastrarMembro);
+		return membroSalvo.getIdMembro();
 	}
 	
-	@GetMapping
+	@PutMapping("/atualizar")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public Optional<CadastrarMembro> update(@RequestParam(required = true) CadastrarMembro membroAtualizado) {
+	public CadastrarMembro update(@RequestBody(required = true) CadastrarMembro atualizarMembro) {
 		
-		return this.cadastrarService.alterar(membroAtualizado);
+	CadastrarMembro membroAtualizado =  this.cadastrarService.alterar(atualizarMembro);
 		
-		//TODO realizar a lógica do modelo CRUD
+	return membroAtualizado;
 		  
 	}
 }
