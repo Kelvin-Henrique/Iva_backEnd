@@ -28,7 +28,7 @@ namespace Iva.Controllers
 
             _context.Add(usuario);
             _context.SaveChanges();
-            return Ok(); 
+            return Ok(usuario);
         }
 
         [HttpPost]

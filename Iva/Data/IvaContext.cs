@@ -11,5 +11,11 @@ namespace Iva.Data
         }
 
         public DbSet <Usuario> Usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>()
+                .HasKey(u => u.Id);  
+        }
     }
 }

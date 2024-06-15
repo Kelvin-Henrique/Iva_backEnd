@@ -26,8 +26,6 @@ namespace Iva.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Celular = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Senha = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
