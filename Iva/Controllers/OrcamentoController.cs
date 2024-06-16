@@ -22,19 +22,17 @@ namespace Iva.Controllers
         {
             try
             {
-                // Verifica se o usuário existe no banco de dados
                 var usuario = await _context.Usuarios.FindAsync(orcamento.UsuarioId);
                 if (usuario == null)
                 {
                     return BadRequest("Usuário não encontrado");
                 }
 
-                // Associa o usuário ao orçamento
-                orcamento.Usuario = null; // Limpa a propriedade de navegação para evitar problemas de rastreamento do EF Core
+                orcamento.Usuario = null; 
                 _context.OrcamentoTb.Add(orcamento);
                 await _context.SaveChangesAsync();
 
-                return Ok(orcamento); // Retorna o orçamento cadastrado
+                return Ok(orcamento);
             }
             catch (Exception ex)
             {
@@ -42,12 +40,51 @@ namespace Iva.Controllers
             }
         }
 
+        [HttpPut("{orcamentoId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AtualizarOrcamento([FromRoute] int orcamentoId, [FromBody] Orcamento orcamentoAtualizado)
+        {
+            try
+            {
+                var orcamentoExistente = await _context.OrcamentoTb.FindAsync(orcamentoId);
+                if (orcamentoExistente == null)
+                {
+                    return NotFound("Orçamento não encontrado");
+                }
+
+                // Atualize os campos do orçamento existente com os valores do orçamento atualizado
+                orcamentoExistente.Descricao = orcamentoAtualizado.Descricao;
+                orcamentoExistente.Valor = orcamentoAtualizado.Valor;
+                orcamentoExistente.Data = orcamentoAtualizado.Data;
+                // Adicione outros campos conforme necessário
+
+                _context.OrcamentoTb.Update(orcamentoExistente);
+                await _context.SaveChangesAsync();
+
+                return Ok(orcamentoExistente);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao atualizar orçamento: {ex.Message}");
+            }
+        }
+
+
         [HttpGet]
         [Route("{usuarioId}")]
         [AllowAnonymous]
         public IActionResult ObterOrcamentos([FromRoute] int usuarioId)
         {
             var orcamentos = _context.OrcamentoTb.Where(o => o.UsuarioId == usuarioId);
+            return Ok(orcamentos);
+        }
+
+        [HttpGet]
+        [Route("obter-orcamento/{orcamentoId}")]
+        [AllowAnonymous]
+        public IActionResult ObterOrcamentosPorId([FromRoute] int orcamentoId)
+        {
+            var orcamentos = _context.OrcamentoTb.Where(o => o.Id == orcamentoId);
             return Ok(orcamentos);
         }
 
