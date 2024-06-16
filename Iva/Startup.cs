@@ -27,11 +27,8 @@ namespace Iva
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-            }
 
-            app.UseCors("CorsPolicy");  
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
@@ -44,6 +41,5 @@ namespace Iva
                 endpoints.MapControllers();
             });
         }
-
     }
 }

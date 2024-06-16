@@ -11,11 +11,15 @@ namespace Iva.Data
         }
 
         public DbSet <Usuario> Usuarios { get; set; }
+        public DbSet<Orcamento> OrcamentoTb { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>()
                 .HasKey(u => u.Id);  
+
+            modelBuilder.Entity<Orcamento>()
+                .HasKey(o => o.Id);
         }
     }
 }

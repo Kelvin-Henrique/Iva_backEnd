@@ -3,6 +3,7 @@ using System;
 using Iva.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Iva.Migrations
 {
     [DbContext(typeof(IvaContext))]
-    partial class IvaContextModelSnapshot : ModelSnapshot
+    [Migration("20240616014021_AddUsuarioIdToOrcamento")]
+    partial class AddUsuarioIdToOrcamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

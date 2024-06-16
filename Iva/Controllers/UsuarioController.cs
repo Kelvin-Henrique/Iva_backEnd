@@ -16,7 +16,7 @@ namespace Iva.Controllers
             _context = context;
         }
 
-        [HttpPost]
+        [HttpPost, HttpGet]
         [Route("cadastrar")]
         [AllowAnonymous]
         public IActionResult AdicionarUsuario([FromBody] Usuario usuario)
@@ -31,7 +31,7 @@ namespace Iva.Controllers
             return Ok(usuario);
         }
 
-        [HttpPost]
+        [HttpPost, HttpGet]
         [Route("login")]
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginModel loginModel)
@@ -40,13 +40,18 @@ namespace Iva.Controllers
 
             if (user != null)
             {
-                if (user.Senha == loginModel.Password)
+                if(user.Email != loginModel.Email)
                 {
-                    return Ok();
+                    return BadRequest("Email Inválido.");
+                }
+
+                if (user.Senha != loginModel.Password)
+                {
+                    return BadRequest("Senha Inválida.");
                 }
             }
 
-            return BadRequest("Falha no login.");
+            return Ok(user.Id);
         }
 
 
